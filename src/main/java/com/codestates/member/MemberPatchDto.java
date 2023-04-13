@@ -4,7 +4,7 @@ import javax.validation.constraints.Pattern;
 
 public class MemberPatchDto {
     private long memberId; // Request Body에 포한되는 데이터가 아니라 유효성 검증 필요 없다.
-    @Pattern(regexp = "^\\S+(\\s?\\S+)*$", message = "회원 이름은 공백이 아니어야 합니다.")
+    @NotSpace(message = "회원 이름은 공백이 아니어야 합니다") // 백을 허용하지 않는 Custom Annotation을 MemberPatchDto 멤버 변수에 추가
     private String name;
 
     @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",// 정규표현식 사용
