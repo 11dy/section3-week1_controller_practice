@@ -16,17 +16,23 @@ import java.util.Map;
 public class MemberController {
     @PostMapping//클라이언트의 요청 데이터(request body)를 서버에 생성할 때 사용하는 애너테이션
     // 회원 정보 등록
-    public ResponseEntity postMember(@RequestParam("email") String email,  // @RequestParam은 핸들러 메서드의 파라미터 종류 중 하나
-                             @RequestParam("name") String name,
-                             @RequestParam("phone") String phone) {
-        Map<String, String> map = new HashMap<>();
-        map.put("email", email);
-        map.put("name", name);
-        map.put("phone", phone);
-        // reponsentity 객체로 리턴, 응답 데이터와 http응답 상태를 함께 전달
-        return new ResponseEntity<>(map, HttpStatus.CREATED); // HttpStatus.CREATED는 클라이언트의 POST 요청을 처리
+    public ResponseEntity postMember(@RequestBody MemberPostDto memberPostDto){
+        return new ResponseEntity<>(memberPostDto, HttpStatus.CREATED);
     }
 
+    // 회원 정보 수정
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
+                                      @RequestBody MemberPatchDto memberPatchDto) {
+        memberPatchDto.setMemberId(memberId);
+        memberPatchDto.setName("홍길동");
+
+        // No need Business logic
+
+        return new ResponseEntity<>(memberPatchDto, HttpStatus.OK);
+    }
+
+    // 한 명의 회원 정보 조회
     @GetMapping("/{member-id}") // 클라이언트가 서버에 리소스를 조회할 때 사용하는 애너테이션
     public ResponseEntity getMember(@PathVariable("member-id")long memberId){ // 특정 회원의 정보를 클라이언트 쪽에 제공하는 핸들러 메서드
         System.out.println(" memberId: " + memberId);
