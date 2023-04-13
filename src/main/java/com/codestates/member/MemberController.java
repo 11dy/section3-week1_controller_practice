@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,19 +17,16 @@ import java.util.Map;
 public class MemberController {
     @PostMapping//클라이언트의 요청 데이터(request body)를 서버에 생성할 때 사용하는 애너테이션
     // 회원 정보 등록
-    public ResponseEntity postMember(@RequestBody MemberPostDto memberPostDto){
+    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto){
         return new ResponseEntity<>(memberPostDto, HttpStatus.CREATED);
     }
 
     // 회원 정보 수정
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
-                                      @RequestBody MemberPatchDto memberPatchDto) {
+                                      @Valid @RequestBody MemberPatchDto memberPatchDto) {
         memberPatchDto.setMemberId(memberId);
-        memberPatchDto.setName("홍길동");
-
         // No need Business logic
-
         return new ResponseEntity<>(memberPatchDto, HttpStatus.OK);
     }
 
